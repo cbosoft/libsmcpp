@@ -4,6 +4,7 @@ CFLAGS = -Wall -Wextra -Werror -std=c++17 -O2
 HDR = src/smc.hpp src/data.hpp src/util.hpp
 OBJ = obj/smc.o obj/data.o obj/util.o
 LINK = -lpthread
+FRMWK = -framework IOKit
 DEFS =
 
 ## Colours
@@ -24,11 +25,11 @@ obj/%.o: src/%.cpp $(HDR)
 
 smctool: $(CLIENT) $(OBJ) obj/main.o $(HDR)
 	@printf "$(COL_OBJ)LINKING OBJECTS TO EXECUTABLE $@$(COL_RST)\n"
-	@$(CXX) $(CFLAGS) $(DEFS) $(CLIENT) $(OBJ) obj/main.o -o $@ $(LINK)
+	@$(CXX) $(CFLAGS) $(FRMWK) $(DEFS) $(CLIENT) $(OBJ) obj/main.o -o $@ $(LINK)
 
 tests: $(CLIENT) $(OBJ) obj/tests.o $(HDR)
 	@printf "$(COL_OBJ)LINKING OBJECTS TO EXECUTABLE $@$(COL_RST)\n"
-	@$(CXX) $(CFLAGS) $(DEFS) $(CLIENT) $(OBJ) obj/tests.o -o $@ $(LINK)
+	@$(CXX) $(CFLAGS) $(FRMWK) $(DEFS) $(CLIENT) $(OBJ) obj/tests.o -o $@ $(LINK)
 
 options:
 	@printf "Compiler: $(COL_BLD)$(CXX)$(COL_RST)\n"
