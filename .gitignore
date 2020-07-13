@@ -1,0 +1,4 @@
+*.o
+*.un~
+.DS_Store
+tags
