@@ -54,10 +54,52 @@ void data_conv_f2f_test()
 
 }
 
+void data_conv_i2f_test()
+{
+
+	std::string name = "data_conv_i2f_test";
+	int i = 5;
+	float c = float(i);
+
+	SMCData d(i);
+
+	float o = d;
+
+	if (o == c) {
+		pass(name);
+	}
+	else {
+		fail(name, Formatter() << c << " != " << o);
+	}
+
+}
+
+void data_conv_f2i_test()
+{
+
+	std::string name = "data_conv_f2i_test";
+	float i = 3.14;
+	int c = int(i);
+
+	SMCData d(i);
+
+	int o = d;
+
+	if (o == c) {
+		pass(name);
+	}
+	else {
+		fail(name, Formatter() << c << " != " << o);
+	}
+
+}
+
 
 
 int main(void)
 {
 	data_conv_f2f_test();
 	data_conv_i2i_test();
+	data_conv_i2f_test();
+	data_conv_f2i_test();
 }
