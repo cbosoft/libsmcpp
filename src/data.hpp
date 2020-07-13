@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include <IOKit/IOKitLib.h>
 
 #include "smc_kext.hpp"
@@ -19,8 +21,13 @@ public:
 	SMCData();
 	SMCData(int i);
 	SMCData(double f);
+	std::string type_string() const;
 
 	void clear();
+
+	const uint8_t *get_data() const;
+	uint32_t get_size() const;
+	uint32_t get_type() const;
 
 	// 'low' level setting of data and type
 	void set_data(uint8_t data[32]);

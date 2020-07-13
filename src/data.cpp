@@ -30,6 +30,21 @@ void SMCData::clear()
 	memset(this->data, 0, 32);
 }
 
+const uint8_t *SMCData::get_data() const
+{
+	return &(this->data[0]);
+}
+
+uint32_t SMCData::get_size() const
+{
+	return this->dataSize;
+}
+
+uint32_t SMCData::get_type() const
+{
+	return this->dataType;
+}
+
 void SMCData::set_fpe2(int i)
 {
 	this->data[0] = i >> 6;
@@ -90,3 +105,28 @@ float SMCData::get_float_value() const
 		return float(this->int_from_fpe2());
 	}
 }
+std::string SMCData::type_string() const
+{
+	int shift = 24;
+	uint32_t val = this->dataType;
+
+
+	std::string rv;
+    for (int i = 0; i < DATA_TYPE_SIZE; i++) {
+        // To get each char, we shift it into the lower 8 bits, and then & by
+        // 255 to insolate it
+        char c = (val >> shift) & 0xff;
+        std::cerr << int(c) << std::endl;
+        rv += c;
+        shift -= 8;
+    }
+
+    return rv;
+}
+
+
+
+
+
+
+
