@@ -4,17 +4,19 @@
 #include "data.hpp"
 
 class SMC {
-private:
-	SMCParamStruct last_output;
-	SMCData in, out;
 
+private:
 	io_connect_t conn;
-	SMCParamStruct &call(const SMCParamStruct &input);
-	SMCData &read(char *key);
-	void write(char *key, SMCData &in);
+	void call(SMCParamStruct *input_struct, SMCParamStruct *output_struct);
+	void open();
+	void close();
 
 public:
 	SMC();
 	~SMC();
+
+	SMCData read(const char *key);
+	SMCData read(char *key);
+	void write(char *key, SMCData in);
 	
 };
