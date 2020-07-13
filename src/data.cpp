@@ -77,6 +77,12 @@ int SMCData::int_from_fpe2() const
     return ans;
 }
 
+double SMCData::flt_from_sp78() const
+{
+	double rv = this->data[0];
+	return rv;
+}
+
 double SMCData::flt_from_flt() const
 {
 	// fun bit of c-ish goodness
@@ -88,23 +94,32 @@ double SMCData::flt_from_flt() const
 
 int SMCData::get_int_value() const
 {
-	if (this->dataType == to_uint32_t(DATA_TYPE_FPE2)) {
-		return this->int_from_fpe2();
-	}
-	else {
-		return int(this->flt_from_flt());
-	}
+	if (this->dataType == to_uint32_t(DATA_TYPE_FPE2))
+			return this->int_from_fpe2();
+
+	if (this->dataType == to_uint32_t(DATA_TYPE_SP78))
+			return int(this->flt_from_sp78());
+
+	if (this->dataType == to_uint32_t(DATA_TYPE_FLT_))
+			return int(this->flt_from_flt());
+
+	throw SMCError(Formatter() << "Unrecognised type: " << this->type_string());
 }
 
-float SMCData::get_float_value() const
+double SMCData::get_float_value() const
 {
-	if (this->dataType == to_uint32_t(DATA_TYPE_FLT_)) {
-		return this->flt_from_flt();
-	}
-	else {
-		return float(this->int_from_fpe2());
-	}
+	if (this->dataType == to_uint32_t(DATA_TYPE_FPE2))
+			return double(this->int_from_fpe2());
+
+	if (this->dataType == to_uint32_t(DATA_TYPE_SP78))
+			return this->flt_from_sp78();
+
+	if (this->dataType == to_uint32_t(DATA_TYPE_FLT_))
+			return this->flt_from_flt();
+
+	throw SMCError(Formatter() << "Unrecognised type: " << this->type_string());
 }
+
 std::string SMCData::type_string() const
 {
 	int shift = 24;

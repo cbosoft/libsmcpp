@@ -21,6 +21,7 @@ public:
 	SMCData();
 	SMCData(int i);
 	SMCData(double f);
+	SMCData(uint8_t *data, uint32_t data_type);
 	std::string type_string() const;
 
 	void clear();
