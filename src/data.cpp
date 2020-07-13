@@ -16,7 +16,7 @@ SMCData::SMCData(int i)
 	this->set_fpe2(i);
 }
 
-SMCData::SMCData(float f)
+SMCData::SMCData(double f)
 {
 	this->clear();
 	this->set_flt(f);
@@ -38,8 +38,9 @@ void SMCData::set_fpe2(int i)
     this->dataType = to_uint32_t(DATA_TYPE_FPE2);
 }
 
-void SMCData::set_flt(float f)
+void SMCData::set_flt(double d)
 {
+	float f = float(d);
 	uint8_t *c_data = (uint8_t *)&f;
 
 	for (int i = 0; i < 4; i++) {
@@ -61,13 +62,13 @@ int SMCData::int_from_fpe2() const
     return ans;
 }
 
-float SMCData::flt_from_flt() const
+double SMCData::flt_from_flt() const
 {
 	// fun bit of c-ish goodness
 	// pointer to the first location in the data array, cast to float*
 	// and dereferenced to get the float value
 	float f = *((float*)&(this->data[0]));
-	return f;
+	return double(f);
 }
 
 int SMCData::get_int_value() const
