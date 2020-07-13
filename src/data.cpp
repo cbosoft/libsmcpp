@@ -3,6 +3,7 @@
 
 #include "data.hpp"
 #include "util.hpp"
+#include "exception.hpp"
 
 SMCData::SMCData()
 {
