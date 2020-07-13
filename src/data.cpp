@@ -22,6 +22,15 @@ SMCData::SMCData(double f)
 	this->set_flt(f);
 }
 
+SMCData::SMCData(uint8_t *data, uint32_t data_type)
+{
+	uint8_t s = (data_type == to_uint32_t(DATA_TYPE_FLT_)?4:2);
+	memset(this->data, 0, 32);
+	memcpy(this->data, data, s);
+	this->dataSize = s;
+	this->dataType = data_type;
+}
+
 void SMCData::clear()
 {
 	// reset contents to zero
