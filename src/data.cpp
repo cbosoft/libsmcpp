@@ -12,7 +12,7 @@ SMCData::SMCData()
 
 SMCData::SMCData(double f)
 {
-	this->set_value(d);
+	this->set_value(f);
 }
 
 SMCData::SMCData(uint8_t *data, uint32_t type)
