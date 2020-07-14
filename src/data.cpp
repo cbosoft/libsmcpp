@@ -7,51 +7,64 @@
 
 SMCData::SMCData()
 {
-	this->clear();
-}
-
-SMCData::SMCData(int i)
-{
-	this->clear();
-	this->set_fpe2(i);
+	this->set_value(0);
 }
 
 SMCData::SMCData(double f)
 {
-	this->clear();
-	this->set_flt(f);
+	this->set_value(d);
 }
 
-SMCData::SMCData(uint8_t *data, uint32_t data_type)
+SMCData::SMCData(uint8_t *data, uint32_t type)
 {
-	uint8_t s = (data_type == to_uint32_t(DATA_TYPE_FLT_)?4:2);
-	memset(this->data, 0, 32);
-	memcpy(this->data, data, s);
-	this->dataSize = s;
-	this->dataType = data_type;
+	this->set_value(data, type);
 }
 
-void SMCData::clear()
+
+
+
+
+void SMCData::set_value(double d)
 {
-	// reset contents to zero
-	this->dataSize = 0;
-	this->dataType = 0;
-	memset(this->data, 0, 32);
+	this->value_int = int(d);
+	this->value_float = d;
 }
 
-const uint8_t *SMCData::get_data() const
+void SMCData::set_value(uint8_t *data, uint32_t type)
 {
-	return &(this->data[0]);
+	switch (type)
+	{
+		case TO_UINT(DATA_TYPE_FPE2):
+			this->set_value(SMCData::from_fpe2(data));
+			break;
+		case TO_UINT(DATA_TYPE_SP78):
+			this->set_value(SMCData::from_sp78(data));
+			break;
+		case TO_UINT(DATA_TYPE_FLT_):
+			this->set_value(SMCData::from_flt(data));
+			break;
+	}
+
+	throw SMCError("Unrecognised type encountered.");
 }
 
-uint32_t SMCData::get_size() const
-{
-	return this->dataSize;
-}
 
-uint32_t SMCData::get_type() const
+
+
+
+
+
+
+
+
+
+
+
+
+void SMCData::get_data(uint32_t type, uint8_t **data, uint32_t &size) const
 {
-	return this->dataType;
+	// TODO: convert from data into requested type.
+	// data param must be allocd to > 4 bytes before passed into this method.
 }
 
 void SMCData::set_fpe2(int i)
@@ -75,7 +88,19 @@ void SMCData::set_flt(double d)
 	this->dataType = to_uint32_t(DATA_TYPE_FLT_);
 }
 
-int SMCData::int_from_fpe2() const
+void SMCData::set_sp78(double d)
+{
+	uint8_t *c_data = (uint8_t *)&d;
+	memcpy(this->data, c_data, 8);
+	this->dataSize = 8;
+	this->dataType = TO_UINT(DATA_TYPE_SP78);
+}
+
+
+
+
+
+double SMCData::from_fpe2(uint8_t *data) const
 {
 	int ans = 0;
 
@@ -83,69 +108,81 @@ int SMCData::int_from_fpe2() const
     // http://stackoverflow.com/questions/22160746/fpe2-and-sp78-data-types
     ans += data[0] << 6;
     ans += data[1] >> 2;// this is changed over upstream; is upstream broken? Or am I making a mistake in changing this?
+
+    int frac = data[1] & 3;
+
+
     return ans;
 }
 
-double SMCData::flt_from_sp78() const
+double SMCData::int_from_sp78(uint8_t *data)
 {
-	double rv = this->data[0];
+	double rv = data[0]; // no!
+	int ans = 0;
+
+	int sign = (data[0] >> 7) & 1;
+	ans += (data[0] & ((1 << 7) - 1)) << 6;
+	ans += data[]
 	return rv;
 }
 
-double SMCData::flt_from_flt() const
+double SMCData::flt_from_flt(uint8_t *data)
 {
 	// fun bit of c-ish goodness
 	// pointer to the first location in the data array, cast to float*
 	// and dereferenced to get the float value
-	float f = *((float*)&(this->data[0]));
+	float f = *((float*)&(data[0]));
 	return double(f);
 }
 
 int SMCData::get_int_value() const
 {
-	if (this->dataType == to_uint32_t(DATA_TYPE_FPE2))
+	switch (this->dataType) {
+		case TO_UINT(DATA_TYPE_FPE2):
 			return this->int_from_fpe2();
 
-	if (this->dataType == to_uint32_t(DATA_TYPE_SP78))
+		case TO_UINT(DATA_TYPE_SP78):
 			return int(this->flt_from_sp78());
 
-	if (this->dataType == to_uint32_t(DATA_TYPE_FLT_))
+		case TO_UINT(DATA_TYPE_FLT_):
 			return int(this->flt_from_flt());
+	}
 
 	throw SMCError(Formatter() << "Unrecognised type: " << this->type_string());
 }
 
 double SMCData::get_float_value() const
 {
-	if (this->dataType == to_uint32_t(DATA_TYPE_FPE2))
+	switch (this->dataType) {
+		case TO_UINT(DATA_TYPE_FPE2):
 			return double(this->int_from_fpe2());
 
-	if (this->dataType == to_uint32_t(DATA_TYPE_SP78))
+		case TO_UINT(DATA_TYPE_SP78):
 			return this->flt_from_sp78();
 
-	if (this->dataType == to_uint32_t(DATA_TYPE_FLT_))
+		case TO_UINT(DATA_TYPE_FLT_):
 			return this->flt_from_flt();
+	}
 
 	throw SMCError(Formatter() << "Unrecognised type: " << this->type_string());
 }
 
-std::string SMCData::type_string() const
+SMCData SMCData::cast_as_type(uint32_t type)
 {
-	int shift = 24;
-	uint32_t val = this->dataType;
+	int i = int(*this);
+	double f = double(*this);
 
+	switch (type) {
+		case TO_UINT(DATA_TYPE_FPE2):
+			return SMCData(i);
 
-	std::string rv;
-    for (int i = 0; i < DATA_TYPE_SIZE; i++) {
-        // To get each char, we shift it into the lower 8 bits, and then & by
-        // 255 to insolate it
-        char c = (val >> shift) & 0xff;
-        std::cerr << int(c) << std::endl;
-        rv += c;
-        shift -= 8;
-    }
+		case TO_UINT(DATA_TYPE_FLT_):
+		case TO_UINT(DATA_TYPE_SP78):
+			return SMCData(f, type);
 
-    return rv;
+	}
+
+	throw SMCError(Formatter() << "Unrecognised type: " << this->type_string());
 }
 
 

@@ -7,48 +7,26 @@
 #include "smc_kext.hpp"
 
 class SMCData {
-private:
-	uint8_t data[32];
-	uint32_t dataType;
-	uint32_t dataSize;
-	kSMC_t kSMC;
 
-	int int_from_fpe2() const;
-	double flt_from_flt() const;
-	double flt_from_sp78() const;
+private:
+	double value;
+
+	static double from_fpe2(uint8_t *data);
+	static double from_sp78(uint8_t *data);
+	static double from_flt(uint8_t *data);
+	static void to_fpe2(int, uint8_t &*data, uint32_t &size);
+	static void to_sp78(int, uint8_t &*data, uint32_t &size);
+	static void to_flt_(double, uint8_t &*data, uint32_t &size);
+
+	void set_value(double d);
+	void set_value(uint8_t *data, uint32_t type)
 
 public:
 	SMCData();
-	SMCData(int i);
 	SMCData(double f);
 	SMCData(uint8_t *data, uint32_t data_type);
 
-	std::string type_string() const;
-
-	void clear();
-
-	const uint8_t *get_data() const;
-	uint32_t get_size() const;
-	uint32_t get_type() const;
-
-	// 'low' level setting of data and type
-	void set_data(uint8_t data[32]);
-	void set_data_type(uint32_t type);
-
-	// helper funcs for setting data and type
-	void set_fpe2(int number);
-	void set_flt(double number);
-
-	// helper funcs for getting data
-	int get_int_value() const;
-	double get_float_value() const;
-
-	// operators
-
-	operator int() const
-	{
-		return this->get_int_value();
-	}
+	get_data(uint32_t type, uint8_t &*data, uint32_t &size) const;
 
 	operator double() const
 	{
