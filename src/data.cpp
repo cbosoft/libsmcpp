@@ -31,20 +31,26 @@ void SMCData::set_value(double d)
 
 void SMCData::set_value(uint8_t *data, uint32_t type)
 {
+
 	switch (type)
 	{
 		case TO_UINT(DATA_TYPE_FPE2):
 			this->set_value(SMCData::from_fpe2(data));
 			break;
+
 		case TO_UINT(DATA_TYPE_SP78):
 			this->set_value(SMCData::from_sp78(data));
 			break;
+
 		case TO_UINT(DATA_TYPE_FLT_):
 			this->set_value(SMCData::from_flt_(data));
 			break;
+
+		default:
+			throw SMCError("Unrecognised type encountered!");
 	}
 
-	throw SMCError("Unrecognised type encountered.");
+	
 }
 
 double SMCData::from_fixd(int integer, int fraction, int fraclen, bool neg)
