@@ -39,11 +39,11 @@ void data_conv_f2f_test()
 {
 
 	std::string name = "data_conv_f2f_test";
-	float i = 3.14;
+	double i = 3.14;
 
 	SMCData d(i);
 
-	float o = d;
+	double o = d;
 
 	if (o == i) {
 		pass(name);
@@ -59,11 +59,11 @@ void data_conv_i2f_test()
 
 	std::string name = "data_conv_i2f_test";
 	int i = 5;
-	float c = float(i);
+	double c = double(i);
 
 	SMCData d(i);
 
-	float o = d;
+	double o = d;
 
 	if (o == c) {
 		pass(name);
@@ -78,7 +78,7 @@ void data_conv_f2i_test()
 {
 
 	std::string name = "data_conv_f2i_test";
-	float i = 3.14;
+	double i = 3.14;
 	int c = int(i);
 
 	SMCData d(i);
