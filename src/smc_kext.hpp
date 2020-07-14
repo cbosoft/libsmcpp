@@ -126,5 +126,7 @@ http://stackoverflow.com/questions/22160746/fpe2-and-sp78-data-types
 #define DATA_TYPE_SP78   "sp78"
 #define DATA_TYPE_FLT_   "flt "
 
+#define TO_UINT(S) ((S[0] << 24) + (S[1] << 16) + (S[2] << 8) + S[3])
+
 #define SMC_KEY_SIZE 	 4
 #define DATA_TYPE_SIZE 	 4
