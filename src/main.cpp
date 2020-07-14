@@ -4,26 +4,55 @@
 #include "list.hpp"
 
 
-void p(SMCData d)
+void usage()
 {
-	std::cerr << double(d) << std::endl;
+  std::cerr
+    << "  smctool\n"
+    << "\n"
+    << "  Usage:\n"
+    << "    smctool <command> [<args...>]\n"
+    << "\n"
+    << "  Commands:\n"
+    << "    list        lists CMS keys and some metadata\n"
+    << "    read <key>  read key value\n"
+    ;
 }
+
 
 int main(int argc, const char **argv)
 {
 
 	argc--; argv++;
 
-	if (argc && (strcmp(argv[0], "list") == 0)) {
-		list_all_keys();
-		return 0;
-	}
+  if (argc < 1) {
+    usage();
+    return 1;
+  }
 
-	SMC s;
-	double res1 = s.read("F0Ac");
-	double res2 = s.read("F1Ac");
-	double res3 = s.read("TC0P");
-	double res4 = (argc ? double(s.read(argv[0])) : 0.5);
+  const char *command = argv[0];
 
-	std::cerr << res1 << " " << res2 << " " << res3 << " " << res4 << std::endl;
+  if (strcmp(command, "list") == 0) {
+    list_all_keys();
+  }
+  else if (strcmp(command, "read") == 0) {
+    if (argc < 2) {
+      usage();
+      return 1;
+    }
+    const char *key = argv[1];
+
+    try {
+      double v = SMC().read(key);
+      std::cout << v << std::endl;
+    }
+    catch (const SMCError &e) {
+      std::cerr << "Error encountered while reading SMC key: " << e.what() << std::endl;
+    }
+
+  }
+  else {
+    usage();
+    std::cerr << "  Unknown command " << command << std::endl;
+    return 1;
+  }
 }
