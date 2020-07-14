@@ -100,8 +100,6 @@ void SMC::open()
 
 	IOServiceOpen(service, mach_task_self(), 0, &this->conn);
 	IOObjectRelease(service);
-
-	std::cerr << "SMC open." << std::endl;
 }
 
 void SMC::close()
@@ -110,8 +108,6 @@ void SMC::close()
 	if (result) {
 		throw SMCError(Formatter() << "Error closing SMC connection! (" << err_get_code(result) << ")");
 	}
-
-	std::cerr << "SMC closed." << std::endl;
 }
 
 bool SMC::check_key(char *key, SMCKeyInfoData *info)
