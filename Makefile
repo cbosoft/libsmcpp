@@ -1,8 +1,8 @@
 CXX ?= g++
 CFLAGS = -Wall -Wextra -Werror -std=c++17 -O2
 
-HDR = src/smc.hpp src/data.hpp src/util.hpp
-OBJ = obj/smc.o obj/data.o obj/util.o
+HDR = src/smc.hpp src/data.hpp src/util.hpp src/exception.hpp
+OBJ = obj/smc.o obj/data.o obj/util.o obj/list.o
 LINK = -lpthread
 FRMWK = -framework IOKit
 DEFS =
