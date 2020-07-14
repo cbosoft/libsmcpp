@@ -11,6 +11,7 @@ class SMCData {
 private:
 	double value;
 
+	static double from_fixd(int integer, int fraction, int fraclen, bool neg=false);
 	static double from_fpe2(uint8_t *data);
 	static double from_sp78(uint8_t *data);
 	static double from_flt_(uint8_t *data);
