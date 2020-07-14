@@ -41,6 +41,7 @@ void list_all_keys()
 		perm[0] = a;
 		for (auto b : valid_chars) {
 			perm[1] = b;
+			std::cerr << "\r" << a << b << "**...";
 			for (auto c : valid_chars) {
 				perm[2] = c;
 				for (auto d : valid_chars) {
@@ -56,9 +57,6 @@ void list_all_keys()
               << " " << attr_to_str(info.dataAttributes)
               << std::endl;
 					}
-          else {
-						std::cout << "\r" << perm << "...";
-          }
 
 				}
 			}
