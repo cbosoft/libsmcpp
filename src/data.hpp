@@ -13,7 +13,7 @@ private:
 
 	static double from_fpe2(uint8_t *data);
 	static double from_sp78(uint8_t *data);
-	static double from_flt(uint8_t *data);
+	static double from_flt_(uint8_t *data);
 	static void to_fpe2(int, uint8_t &*data, uint32_t &size);
 	static void to_sp78(int, uint8_t &*data, uint32_t &size);
 	static void to_flt_(double, uint8_t &*data, uint32_t &size);
