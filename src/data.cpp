@@ -49,14 +49,14 @@ void SMCData::set_value(uint8_t *data, uint32_t type)
 
 double SMCData::from_fixd(int integer, int fraction, int fraclen, bool neg)
 {
-	double rv = double(intger);
+	double rv = double(integer);
 	double den = 2.0;
 	int mask = 1 << 7;
 
 	// TODO: is this right?
 	for (int i = 0; i < fraclen; i++) {
-		rv += (frac_part & mask) ? (1.0/den) : (0.0);
-		mark /= 2;
+		rv += (fraction & mask) ? (1.0/den) : (0.0);
+		mask /= 2;
 		den *= 2.0;
 	}
 
@@ -67,7 +67,7 @@ double SMCData::from_fixd(int integer, int fraction, int fraclen, bool neg)
 
 double SMCData::from_fpe2(uint8_t *data)
 {
-	int integer += data[0] << 6;
+	int integer = data[0] << 6;
 	integer += data[1] >> 2;
 
 	int fraction = data[1] & 3;
