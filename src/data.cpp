@@ -40,7 +40,7 @@ void SMCData::set_value(uint8_t *data, uint32_t type)
 			this->set_value(SMCData::from_sp78(data));
 			break;
 		case TO_UINT(DATA_TYPE_FLT_):
-			this->set_value(SMCData::from_flt(data));
+			this->set_value(SMCData::from_flt_(data));
 			break;
 	}
 
