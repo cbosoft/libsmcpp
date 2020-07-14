@@ -99,47 +99,44 @@ double SMCData::from_flt_(uint8_t *data)
 
 
 
-void SMCData::get_data(uint32_t type, uint8_t *data, uint32_t &size) const
+void SMCData::get_data(uint32_t type, uint8_t *data) const
 {
 	// TODO: convert from data into requested type.
 
 	switch (type)
 	{
 		case TO_UINT(DATA_TYPE_FPE2):
-			this->to_fpe2(data, size);
+			this->to_fpe2(data);
 			break;
 
 		case TO_UINT(DATA_TYPE_SP78):
-			this->to_sp78(data, size);
+			this->to_sp78(data);
 			break;
 
 		case TO_UINT(DATA_TYPE_FLT_):
-			this->to_flt_(data, size);
+			this->to_flt_(data);
 			break;
 	}
 }
 
-void SMCData::to_fpe2(uint8_t *data, uint32_t &size) const
+void SMCData::to_fpe2(uint8_t *data) const
 {
-	size = 2;
 	int i = this->value;
 	data[0] = i >> 6;
     data[1] = (i << 2) ^ (data[0] << 8);
 }
 
-void SMCData::to_flt_(uint8_t *data, uint32_t &size) const
+void SMCData::to_flt_(uint8_t *data) const
 {
-	size = 4;
 	float f = float(this->value);
 	uint8_t *c_data = (uint8_t *)&f;
-	memcpy(data, c_data, size);
+	memcpy(data, c_data, 4);
 }
 
-void SMCData::to_sp78(uint8_t *data, uint32_t &size) const
+void SMCData::to_sp78(uint8_t *data) const
 {
 	// TODO
 	(void) data;
-	(void) size;
 }
 
 
