@@ -83,8 +83,9 @@ double SMCData::from_fpe2(uint8_t *data)
 
 double SMCData::from_sp78(uint8_t *data)
 {
-	bool sign = data[0] >> 7;
-	int integer = (data[0] & ((1 << 7) - 1)) << 6;
+	bool sign = data[0] >> 7 & 1;
+
+	int integer = (data[0] & ((1 << 7) - 1));
 	int fraction = data[1];
 	return SMCData::from_fixd(integer, fraction, 8, sign);
 }
