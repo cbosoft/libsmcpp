@@ -114,6 +114,25 @@ void SMC::close()
 	std::cerr << "SMC closed." << std::endl;
 }
 
+bool SMC::check_key(char *key)
+{
+	SMCParamStruct in_struct, out_struct;
+	memset(&in_struct, 0, sizeof(SMCParamStruct));
+	memset(&out_struct, 0, sizeof(SMCParamStruct));
+
+	// First call: get key info
+	in_struct.key = TO_UINT(key);
+	in_struct.data8 = kSMCGetKeyInfo;
+
+	try {
+		this->call(&in_struct, &out_struct);
+	}
+	catch (SMCError) {
+		return false;
+	}
+	return true;
+}
+
 
 
 

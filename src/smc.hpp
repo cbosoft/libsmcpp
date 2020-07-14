@@ -18,5 +18,6 @@ public:
 	SMCData read(const char *key);
 	SMCData read(char *key);
 	void write(char *key, SMCData in);
+	bool check_key(char *key);
 	
 };
