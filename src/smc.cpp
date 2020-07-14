@@ -49,7 +49,7 @@ SMCData SMC::read(char *key)
 	memset(&out_struct, 0, sizeof(SMCParamStruct));
 
 	// First call: get key info
-	in_struct.key = to_uint32_t(key);
+	in_struct.key = TO_UINT(key);
 	in_struct.data8 = kSMCGetKeyInfo;
 
 	this->call(&in_struct, &out_struct);
