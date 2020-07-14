@@ -79,17 +79,10 @@ void SMC::write(char *key, SMCData in)
 
 	this->call(&in_struct, &out_struct);
 
-	if ( (out_struct.keyInfo.dataSize != in.get_size()) or 
-		 (out_struct.keyInfo.dataType != in.get_type())) {
-		throw SMCError(Formatter() << "Error encountered making call to SMC: Argument given does not match key type and size.");
-	}
-
-
 	in_struct.data8 = kSMCWriteKey;
 	in_struct.keyInfo.dataSize = out_struct.keyInfo.dataSize;
 
-	const uint8_t *data = in.get_data();
-	memcpy(in_struct.bytes, data, out_struct.keyInfo.dataSize);
+	in.get_data(out_struct.keyInfo.dataType, in_struct.bytes);
 
 	this->call(&in_struct, &out_struct);
 
