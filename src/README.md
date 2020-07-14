@@ -12,6 +12,7 @@ has a bunch so start with:
 Sources:
   - https://www.insanelymac.com/forum/topic/328814-smc-keys-knowledge-database/
   - https://stackoverflow.com/questions/22160746/fpe2-and-sp78-data-types
+  - https://github.com/acidanthera/VirtualSMC/blob/master/Docs/SMCKeys.txt
 
 # Relevance
 
