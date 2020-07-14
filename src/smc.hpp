@@ -1,5 +1,6 @@
 #pragma once
 
+#include "exception.hpp"
 #include "smc_kext.hpp"
 #include "data.hpp"
 
@@ -18,6 +19,6 @@ public:
 	SMCData read(const char *key);
 	SMCData read(char *key);
 	void write(char *key, SMCData in);
-	bool check_key(char *key);
+	bool check_key(char *key, SMCKeyInfoData *info=nullptr);
 	
 };
