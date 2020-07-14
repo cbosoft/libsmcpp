@@ -47,7 +47,7 @@ void SMCData::set_value(uint8_t *data, uint32_t type)
 			break;
 
 		default:
-			throw SMCError("Unrecognised type encountered!");
+			throw SMCError(Formatter() << "Unrecognised type encountered: " << type_to_str(type));
 	}
 
 	
