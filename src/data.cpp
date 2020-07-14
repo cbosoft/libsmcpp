@@ -26,8 +26,7 @@ SMCData::SMCData(uint8_t *data, uint32_t type)
 
 void SMCData::set_value(double d)
 {
-	this->value_int = int(d);
-	this->value_float = d;
+	this->value = d;
 }
 
 void SMCData::set_value(uint8_t *data, uint32_t type)
