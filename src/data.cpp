@@ -136,7 +136,10 @@ void SMCData::get_data(uint32_t type, uint8_t *data) const
 		case TO_UINT(DATA_TYPE_UI8_):
 			this->to_ui8_(data);
 			break;
+    default:
+      throw SMCError(Formatter() << "Unknown type requested for conversion: " << type_to_str(type));
 	}
+
 }
 
 void SMCData::to_fpe2(uint8_t *data) const
