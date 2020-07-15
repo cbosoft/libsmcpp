@@ -119,8 +119,6 @@ double SMCData::from_ui8_(uint8_t *data)
 
 void SMCData::get_data(uint32_t type, uint8_t *data) const
 {
-	// TODO: convert from data into requested type.
-
 	switch (type)
 	{
 		case TO_UINT(DATA_TYPE_FPE2):
