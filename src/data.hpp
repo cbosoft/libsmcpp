@@ -15,9 +15,11 @@ private:
 	static double from_fpe2(uint8_t *data);
 	static double from_sp78(uint8_t *data);
 	static double from_flt_(uint8_t *data);
+  static double from_ui8_(uint8_t *data);
 	void to_fpe2(uint8_t *data) const;
 	void to_sp78(uint8_t *data) const;
 	void to_flt_(uint8_t *data) const;
+  void to_ui8_(uint8_t *data) const;
 
 	void set_value(double d);
 	void set_value(uint8_t *data, uint32_t type);

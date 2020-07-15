@@ -46,6 +46,10 @@ void SMCData::set_value(uint8_t *data, uint32_t type)
 			this->set_value(SMCData::from_flt_(data));
 			break;
 
+		case TO_UINT(DATA_TYPE_UI8_):
+			this->set_value(SMCData::from_ui8_(data));
+			break;
+
 		default:
 			throw SMCError(Formatter() << "Unrecognised type encountered: " << type_to_str(type));
 	}
@@ -96,6 +100,13 @@ double SMCData::from_flt_(uint8_t *data)
 	return double(f);
 }
 
+double SMCData::from_ui8_(uint8_t *data)
+{
+  uint8_t v = data[0];
+  double d = double(v);
+  return d;
+}
+
 
 
 
@@ -123,6 +134,10 @@ void SMCData::get_data(uint32_t type, uint8_t *data) const
 		case TO_UINT(DATA_TYPE_FLT_):
 			this->to_flt_(data);
 			break;
+
+		case TO_UINT(DATA_TYPE_UI8_):
+			this->to_ui8_(data);
+			break;
 	}
 }
 
@@ -144,6 +159,14 @@ void SMCData::to_sp78(uint8_t *data) const
 {
 	// TODO
 	(void) data;
+}
+
+void SMCData::to_ui8_(uint8_t *data) const
+{
+  // TODO
+  uint8_t v = uint8_t(this->value);
+  memset(data, 0, 32);
+  data[0] = v;
 }
 
 

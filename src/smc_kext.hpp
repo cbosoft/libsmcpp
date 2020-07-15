@@ -125,6 +125,7 @@ http://stackoverflow.com/questions/22160746/fpe2-and-sp78-data-types
 #define DATA_TYPE_SFDS   "{fds"
 #define DATA_TYPE_SP78   "sp78"
 #define DATA_TYPE_FLT_   "flt "
+#define DATA_TYPE_UI8_   "ui8 "
 
 #define TO_UINT(S) ((S[0] << 24) + (S[1] << 16) + (S[2] << 8) + S[3])
 
